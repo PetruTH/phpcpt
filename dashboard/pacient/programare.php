@@ -87,7 +87,7 @@ if($x < 4){
                 // TEST
                                    $curl = curl_init();
                     curl_setopt_array($curl, array(
-                        CURLOPT_URL => $_ENV['https://be.trustifi.com'] . "/api/i/v1/email",
+                        CURLOPT_URL => $_ENV['TRUSTIFI_URL'] . "/api/i/v1/email",
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_ENCODING => "",
                         CURLOPT_MAXREDIRS => 10,
@@ -97,8 +97,8 @@ if($x < 4){
                         CURLOPT_CUSTOMREQUEST => "POST",
                         CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$mail\"}],\"title\":\"Confirmare\",\"html\":\"Programarea dumneavoastra a fost inregistrata!\"}",
                         CURLOPT_HTTPHEADER => array(
-                            "x-trustifi-key: " . $_ENV['fff6f66250453c9658ee38ba501d4545c06ff996cec9ea1b'],
-                            "x-trustifi-secret: " . $_ENV['56014825a5ded5b513d09562cb90813a'],
+                            "x-trustifi-key: " . $_ENV['TRUSTIFI_KEY'],
+                            "x-trustifi-secret: " . $_ENV['TRUSTIFI_SECRET'],
                             "content-type: application/json"
                         )
                     ));
