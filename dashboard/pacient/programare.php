@@ -85,13 +85,32 @@ if($x < 4){
             if($wasInserted){
             
                 // TEST
-                $to      = $mail;
-                $subject = 'Confirmarea programarii';
-                $message = 'Buna ziua, ' . $name . ' acest mail reprezinta confirmarea programarii dvs. Va multumim!';
-                $headers = 'From: petru.theodor@outlook.com'       . "\r\n" .
-                        'X-Mailer: PHP/' . phpversion();
+                                   $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => $_ENV['https://be.trustifi.com'] . "/api/i/v1/email",
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => "",
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => "POST",
+                        CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$mail\"}],\"title\":\"Confirmare\",\"html\":\"Programarea dumneavoastra a fost inregistrata!\", \"from\":\"petru.theodor@outlook.com\"}",
+                        CURLOPT_HTTPHEADER => array(
+                            "x-trustifi-key: " . $_ENV['fff6f66250453c9658ee38ba501d4545c06ff996cec9ea1b'],
+                            "x-trustifi-secret: " . $_ENV['56014825a5ded5b513d09562cb90813a'],
+                            "content-type: application/json"
+                        )
+                    ));
 
-                mail($to, $subject, $message, $headers);
+                    $response = curl_exec($curl);
+                    $err = curl_error($curl);
+                    curl_close($curl);
+                    if ($err) {
+                        echo "cURL Error #:" . $err;
+                    } else {
+                        echo $response;
+                    }
                 //TEST
             
                 header("Location: home.php?errorp=Programare inregistrata! Veti primi confirmarea pe mail!");
