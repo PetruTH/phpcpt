@@ -95,7 +95,7 @@ if($x < 4){
                         CURLOPT_FOLLOWLOCATION => true,
                         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                         CURLOPT_CUSTOMREQUEST => "POST",
-                        CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$mail\"}],\"title\":\"Confirmare\",\"html\":\"Programarea dumneavoastra a fost inregistrata!\", \"from\":\"petru.theodor@yahoo.com\"}",
+                        CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$mail\"}],\"title\":\"Confirmare\",\"html\":\"Programarea dumneavoastra a fost inregistrata!\"}",
                         CURLOPT_HTTPHEADER => array(
                             "x-trustifi-key: " . $_ENV['fff6f66250453c9658ee38ba501d4545c06ff996cec9ea1b'],
                             "x-trustifi-secret: " . $_ENV['56014825a5ded5b513d09562cb90813a'],
