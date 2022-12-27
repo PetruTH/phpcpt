@@ -157,6 +157,20 @@ button {
         </form>
         <a href="../logout.php">Logout</a>
         <p>Numarul de vizitari pe aceasta pagina: <?php echo $_SESSION['views'] ?></p>
+
+	<?php
+          echo "Clinica noastra dispune de urmatoarele pachete in parteneriat cu clinica Regina Maria:";
+          $html = file_get_html('https://www.reginamaria.ro/analize-de-laborator/pachete-analize');
+          $pachet = $html->find('div.field__item');
+          $i = 4;
+          while($i<sizeof($pachet)){
+              echo $pachet[$i];
+              echo $pachet[$i+1];
+              echo '<br>';
+              $i=$i+6;
+          }
+        ?>
+	
 </div>
 
 	</body>
