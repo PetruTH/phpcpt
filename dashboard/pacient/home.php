@@ -2,7 +2,6 @@
 include "../dbconnection.php";
 require 'simple_html_dom.php';
 
-
 $usr = $_SESSION['nume'];
 
 $qry = "SELECT * FROM credentiale WHERE nume = '$usr'";
@@ -157,10 +156,8 @@ button {
         <button class="register_button" type="submit">Confirma!</button> 
     
         </form>
-        <a href="../logout.php">Logout</a>
-        <p>Numarul de vizitari pe aceasta pagina: <?php echo $_SESSION['views'] ?></p>
-
-	<?php
+        <br><br>
+        <?php
           echo "Clinica noastra dispune de urmatoarele pachete in parteneriat cu clinica Regina Maria:";
           $html = file_get_html('https://www.reginamaria.ro/analize-de-laborator/pachete-analize');
           $pachet = $html->find('div.field__item');
@@ -172,7 +169,9 @@ button {
               $i=$i+6;
           }
         ?>
-	
+        <br><br>
+        <a href="../logout.php">Logout</a>
+        <p>Numarul de vizitari pe aceasta pagina: <?php echo $_SESSION['views'] ?><br></p>
 </div>
 
 	</body>
