@@ -11,7 +11,14 @@ if (!isset($_SESSION['nume']) || $row['drept']!=1){
   exit('Your session expiried!');
 }
 
-echo "Buna ziua, domnule doctor " . $_SESSION['nume'] . "!";
+echo "Buna ziua, domnule doctor " . $_SESSION['nume'] . "! <br>";
+echo "Informatiile contului dumneavoastra " . "<br>";
+$sql = "SELECT * FROM doctor where nume_doctor='$usr'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_row($result);
+echo 'Numar de telefon: ' . $row[1] . "<br>";
+echo 'Interval orar: ' . $row[2] . "<br>";
+echo 'Specializare: ' . $row[3] . "<br>";
 ?>
 
 <!DOCTYPE html>
