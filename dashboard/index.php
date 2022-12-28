@@ -19,7 +19,8 @@ $result = mysqli_query($conn, $qry);
     <style>
 
     .registration form {
-    margin: auto;
+  margin-top: 10%;
+    margin-left: 25%;
   width: 50%;
   height:390px;
   background-color: black;
