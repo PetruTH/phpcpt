@@ -209,7 +209,6 @@ button {
                     </form>
                 </div>
             </div>
-            <a href="../logout.php">Logout</a>
 
         </div>
     </div>
@@ -231,5 +230,8 @@ button {
             </p>
     <?php } ?>
     </div>
+		 <br><br>
+        <a href="../logout.php">Logout</a>
+        <p>Numarul de vizitari pe aceasta pagina: <?php echo $_SESSION['views'] ?><br></p>
 	</body>
 </html>
