@@ -16,11 +16,21 @@ if (!isset($_SESSION['nume'])){
        return $data;
     }
 
+    $pattern="/[0-2][0-9][:][0][0][-][0-2][0-9][:][0][0]$/";
     $prog = validate($_POST['prog']);
     $doctor = $_SESSION['doctor'];
 
     if(empty($doctor)){
-        header("Location: homeADMIN.php?raspuns=Alege un doctor!");
+        $_SESSION['raspuns'] = 'Alege un doctor!';
+        header("Location: homeADMIN.php");
+        exit();
+    }else if(empty($prog)){
+        $_SESSION['raspuns'] = 'Alege un program!';
+        header("Location: homeADMIN.php");
+        exit();
+    }else if(preg_match($pattern, $prog) === 0){
+        $_SESSION['raspuns'] = 'Alege un program valid!';
+        header("Location: homeADMIN.php");
         exit();
     }else{
 
@@ -28,10 +38,14 @@ if (!isset($_SESSION['nume'])){
             $sql = "UPDATE doctor SET interval_orar = '$prog' WHERE nume_doctor = '$doctor'";
             $result = mysqli_query($conn, $sql);
             $ans = "Programul doctorului " . $doctor . ' a fost actualizat!';
-            header("Location: homeADMIN.php?raspuns=$ans");
+            
+            $_SESSION['raspuns'] = $ans;
+            
+            header("Location: homeADMIN.php");
             exit();
         }else{
-            header("Location: homeADMIN.php?raspuns=Noul program trebuie sa fie diferit de cel initial!");
+            $_SESSION['raspuns'] = 'Noul program trebuie sa fie diferit de cel initial!';
+            header("Location: homeADMIN.php");
             exit();
         }
     }
