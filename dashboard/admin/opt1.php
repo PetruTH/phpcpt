@@ -18,10 +18,12 @@ while ($row = mysqli_fetch_row($result)){
 } 
 
 if($select_str == "Doctorii acestei clinici sunt: <br>"){
-    header("Location: homeADMIN.php?raspuns=Clinica nu mai are momentan niciun doctor angajat!");
+    $_SESSION['raspuns'] = 'Clinica nu mai are momentan niciun doctor angajat!';
+    header("Location: homeADMIN.php");
     exit();
 }else{
-    header("Location: homeADMIN.php?raspuns=$select_str");
+    $_SESSION['raspuns'] = $select_str;
+    header("Location: homeADMIN.php");
     exit();
 }
 ?>
