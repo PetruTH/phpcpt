@@ -2,6 +2,7 @@
 
 session_start();
 include "../dbconnection.php";
+$_SESSION['ans'] = '';
 
 if (!isset($_SESSION['nume'])){ 
     exit('Your session expiried!');
@@ -18,9 +19,15 @@ if (!isset($_SESSION['nume'])){
 
     $tlf = validate($_POST['tlf']);
     $doctor = $_SESSION['nume'];
+    $pattern="/[0][7]\d{8}/";
 
     if(empty($tlf)){
-        header("Location: homeDOCTOR.php?raspuns=Introdu un nou numar de telefon!");
+        $_SESSION['rsp'] = 'Introdu un nou numar de telefon!';
+        header("Location: homeDOCTOR.php");
+        exit();
+    }else if(preg_match($pattern, $tlf) === 0){
+        $_SESSION['rsp'] = 'Introdu un numar de telefon valid!';
+        header("Location: homeDOCTOR.php");
         exit();
     }else{
 
@@ -33,13 +40,15 @@ if (!isset($_SESSION['nume'])){
         }
 
         if($tlf == $tlf_initial){
-            header("Location: homeDOCTOR.php?raspuns=Noul numar de telefon nu poate fi identic cu cel vechi!");
+            $_SESSION['rsp'] = 'Noul numar de telefon nu poate fi identic cu cel vechi!';
+            header("Location: homeDOCTOR.php");
             exit();
         }else{
             $sql_upd = "UPDATE doctor SET telefon_doctor = '$tlf' WHERE nume_doctor = '$doctor' ";
             $result_upd = mysqli_query($conn, $sql_upd);
 
-            header("Location: homeDOCTOR.php?raspuns=Noul numar de telefon a fost inregistrat! Multumit!");
+            $_SESSION['rsp'] = 'Noul numar de telefon a fost inregistrat! Multumim!';
+            header("Location: homeDOCTOR.php");
             exit();
         }
     }
