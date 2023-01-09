@@ -22,22 +22,37 @@ if (!isset($_SESSION['nume'])){
     $specializare = validate($_POST['specializare']);
     $pass = validate($_POST['pass']);
 
+    $pattern_interval="/[0-2][0-9][:][0][0][-][0-2][0-9][:][0][0]$/";
+    $pattern_tlf="/[0][7]\d{8}$/";
 
     if(empty($doctor)){
-        header("Location: homeADMIN.php?raspuns=Completeaza numele doctorului!");
+        $_SESSION['raspuns'] = 'Completeaza numele doctorului!';
+        header("Location: homeADMIN.php");
         exit();
     }else if(empty($program)){
-        header("Location: homeADMIN.php?raspuns=Introdu intervalul orar in care doctorul lucreaza!");
+        $_SESSION['raspuns'] = 'Introdu intervalul orar in care doctorul lucreaza!';
+        header("Location: homeADMIN.php");
         exit();
     }else if(empty($tlf)){
-        header("Location: homeADMIN.php?raspuns=Completeaza numarul de telefon al doctorului!");
+        $_SESSION['raspuns'] = 'Completeaza numarul de telefon al doctorului!';
+        header("Location: homeADMIN.php");
         exit();
     }
     else if(empty($specializare)){
-        header("Location: homeADMIN.php?raspuns=Completeaza specializarea doctorului!");
+        $_SESSION['raspuns'] = 'Completeaza specializarea doctorului!';
+        header("Location: homeADMIN.php");
         exit();
     }else if(empty($pass)){
-        header("Location: homeADMIN.php?raspuns=Introdu o parola pentru contul doctorului!");
+        $_SESSION['raspuns'] = 'Introdu o parola pentru contul doctorului!';
+        header("Location: homeADMIN.php");
+        exit();
+    }else if(preg_match($pattern_interval, $program) === 0){
+        $_SESSION['raspuns'] = 'Introdu un interval orar valid!';
+        header("Location: homeADMIN.php");
+        exit();
+    }else if(preg_match($pattern_tlf, $tlf) === 0){
+        $_SESSION['raspuns'] = 'Introdu un numar de telefon valid!';
+        header("Location: homeADMIN.php");
         exit();
     }
 
@@ -49,11 +64,8 @@ if (!isset($_SESSION['nume'])){
     $wasInsertedacc = mysqli_query($conn, $insertSQLacc);
 
     if($wasInserted){
-        header("Location: homeADMIN.php?raspuns=Registration successful!");
+        $_SESSION['raspuns'] = 'Ai inregistrat doctorul cu succes.';
+        header("Location: homeADMIN.php");
         exit();
-    } else {
-        header("Location: homeADMIN.php?raspuns=Bad luck! Try again");
-        exit();
-    }
-
+    } 
 }
