@@ -19,7 +19,7 @@ if (!isset($_SESSION['nume'])){
 
     $tlf = validate($_POST['tlf']);
     $doctor = $_SESSION['nume'];
-    $pattern="/[0][7]\d{8}/";
+    $pattern="/[0][7]\d{8}$/";
 
     if(empty($tlf)){
         $_SESSION['rsp'] = 'Introdu un nou numar de telefon!';
