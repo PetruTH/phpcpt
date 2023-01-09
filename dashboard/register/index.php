@@ -5,7 +5,8 @@
     <style>
 
     .registration form {
-    margin: auto;
+      margin-top: 10%;
+    margin-left: 25%;
   width: 50%;
   height:390px;
   background-color: black;
@@ -76,15 +77,15 @@ button {
         <form action="registerPacient.php" method="POST">
         <h2>REGISTER</h2>
 
-                <?php if(isset($_GET['error_register'])) { ?>
-                    <p class="error"> <?php echo $_GET['error_register']; ?> </p>
+                <?php if(isset($_SESSION['error_register'])) { ?>
+                    <p class="error"> <?php echo $_SESSION['error_register']; ?> </p>
                 <?php } ?>
 
                 <label> Username </label> <br>
                 <input type="text" name="uname" placeholder="Username"> <br> 
 
                 <label> Password </label> <br>
-                <input type="password" name="password" placeholder="Password"> <br>
+                <input type="password" name="pass" placeholder="Password"> <br>
 
                 <button class="register_button" type="submit">Register</button>
 
