@@ -34,22 +34,32 @@ if (isset($_POST['nume']) && isset($_POST['data']) && isset($_POST['afectiune'])
 
 
 if(empty($name)){
-    header("Location: home.php?errorp=Introduceti numele!");
+    $_SESSION['errorp'] = 'Introduceti numele!';
+    header("Location: home.php");
     exit();
 } else if(empty($data)){
-    header("Location: home.php?errorp=Introduceti data!");
+    $_SESSION['errorp'] = 'Introduceti data!';
+    header("Location: home.php");
     exit();
 }else if(empty($afectiune)){
-    header("Location: home.php?errorp=Introduceti afectiunea!");
+    $_SESSION['errorp'] = 'Introduceti afectiune!';
+    header("Location: home.php");
+    exit();
+}else if ($data < date('Y-m-d')){
+    $_SESSION['errorp'] = 'Nu puteti introduce o data din trecut';
+    header("Location: home.php");
     exit();
 }else if(empty($mail)){
-    header("Location: home.php?errorp=Introduceti mailul!");
+    $_SESSION['errorp'] = 'Introduceti mailul!';
+    header("Location: home.php");
     exit();
 }else if($doctor==""){
-    header("Location: home.php?errorp=Alegeti un doctor!");
+    $_SESSION['errorp'] ='Introduceti un doctor!';
+    header("Location: home.php");
     exit();
 }else if(empty($ora)){
-    header("Location: home.php?errorp=Alegeti o ora!");
+    $_SESSION['errorp'] = 'Introduceti o ora!';
+    header("Location: home.php");
     exit();
 }
 
@@ -72,10 +82,12 @@ if($x < 4){
         $ora = (int) $ora;
 
         if($ora < 0 || $ora > 23){
-            header("Location: home.php?errorp=Alege o ora potrivita!");
+            $_SESSION['errorp'] = 'Alege o ora potrivita!';
+            header("Location: home.php");
             exit();
         }else if ($ora < $ora_start || $ora > $ora_finish){
-            header("Location: home.php?errorp=Medicul selectat nu lucreaza in acel interval orar!");
+            $_SESSION['errorp'] = 'Medicul selectat nu lucreaza in acel interval orar!!';
+            header("Location: home.php");
             exit();
         }else{
 
@@ -85,9 +97,9 @@ if($x < 4){
             if($wasInserted){
             
                 // TEST
-                                   $curl = curl_init();
+                    $curl = curl_init();
                     curl_setopt_array($curl, array(
-                        CURLOPT_URL => 'https://be.trustifi.com' . "/api/i/v1/email",
+                        CURLOPT_URL => $_ENV['TRUSTIFI_URL'] . "/api/i/v1/email",
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_ENCODING => "",
                         CURLOPT_MAXREDIRS => 10,
@@ -97,8 +109,8 @@ if($x < 4){
                         CURLOPT_CUSTOMREQUEST => "POST",
                         CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$mail\"}],\"title\":\"Confirmare\",\"html\":\"Programarea dumneavoastra a fost inregistrata!\"}",
                         CURLOPT_HTTPHEADER => array(
-                            "x-trustifi-key: " . "fff6f66250453c9658ee38ba501d4545c06ff996cec9ea1b",
-                            "x-trustifi-secret: " . "56014825a5ded5b513d09562cb90813a",
+                            "x-trustifi-key: " . $_ENV['TRUSTIFI_KEY'],
+                            "x-trustifi-secret: " . $_ENV['TRUSTIFI_SECRET'],
                             "content-type: application/json"
                         )
                     ));
@@ -112,21 +124,24 @@ if($x < 4){
                         echo $response;
                     }
                 //TEST
-            
-                header("Location: home.php?errorp=Programare inregistrata! Veti primi confirmarea pe mail!");
+                $_SESSION['errorp'] = 'Programare inregistrata! Veti primi confirmarea pe mail!';
+                header("Location: home.php");
                 exit();
             } else {
-                header("Location: home.php?errorp=Bad luck! Try again");
+                $_SESSION['errorp'] = 'Bad luck! Try again';
+                header("Location: home.php");
                 exit();
             }
         }
     }else {
+        $_SESSION['errorp'] = 'Doctorul are deja o programare la acea data!';
         header("Location: home.php?errorp=Doctorul are deja o programare la acea data!");
         exit();
         }
     }
 else{
-    header("Location: home.php?errorp=limita de programari a fost atinsa!");    
+    $_SESSION['errorp'] = 'limita de programari a fost atinsa!';
+    header("Location: home.php");    
     exit();
     }
 }
