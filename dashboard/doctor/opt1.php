@@ -3,6 +3,8 @@
 session_start();
 include "../dbconnection.php";
 
+$_SESSION['ans'] = '';
+
 if (!isset($_SESSION['nume'])){ 
     exit('Your session expiried!');
   }
@@ -21,7 +23,8 @@ if (!isset($_SESSION['nume'])){
     $doctor = $_SESSION['nume'];
 
     if(empty($datapr)){
-        header("Location: homeDOCTOR.php?raspuns=Selecteaza o data!");
+        $_SESSION['rsp'] = 'Selecteaza o data!';
+        header("Location: homeDOCTOR.php");
         exit();
     }
 
@@ -35,10 +38,12 @@ if (!isset($_SESSION['nume'])){
         $i = $i + 1;
     } 
     if($select_str == "Pe data selectata aveti urmatoarele programari: <br>"){
-        header("Location: homeDOCTOR.php?raspuns=Nu exista nicio programare la acea data!");
+        $_SESSION['rsp'] = 'Nu exista nicio programare la acea data!';
+        header("Location: homeDOCTOR.php");
         exit();
     }else{
-        header("Location: homeDOCTOR.php?raspuns=$select_str");
+        $_SESSION['rsp'] = $select_str;
+        header("Location: homeDOCTOR.php");
         exit();
     }
 
