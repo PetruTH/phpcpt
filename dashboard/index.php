@@ -18,7 +18,6 @@ $pacienti = "SELECT * FROM credentiale where drept = 2";
 $result_doctori = mysqli_query($conn, $doctori);
 $result_pacienti = mysqli_query($conn, $pacienti);
 
-
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +25,7 @@ $result_pacienti = mysqli_query($conn, $pacienti);
     <style>
 
     .registration form {
-  margin-top: 10%;
+    margin-top: 10%;
     margin-left: 25%;
   width: 50%;
   height:390px;
@@ -97,8 +96,8 @@ button {
 
         <h2>LOGIN</h2>
 
-        <?php if (isset($_GET['error_login'])) { ?>
-            <p class="error"><?php echo $_GET['error_login']; ?></p>
+        <?php if (isset($_SESSION['error_login'])) { ?>
+            <p class="error"><?php echo $_SESSION['error_login']; ?></p>
         <?php } ?>
 
         <label>Username</label>
@@ -113,16 +112,12 @@ button {
      
         <div><a href="register\index.php">Create account!</a></div>
         
-        
-        <!-- DE IMPLEMENTAT -->
-        <div><a href="#">Continue as a guest!</a></div> 
-        
     
     
         </form>
-</div>
 
-		      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      </div>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
@@ -144,8 +139,6 @@ button {
       }
     </script>
     <div id="piechart_3d" style="width: 700px; height: 300px; margin-top: 50px; margin-left: 390px;"></div>
-
-	<?php ?>
 
 	</body>
 </html>
