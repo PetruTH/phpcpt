@@ -21,7 +21,8 @@ if (!isset($_SESSION['nume'])){
 
 
     if(empty($doctor)){
-        header("Location: homeADMIN.php?raspuns=Completeaza numele doctorului!");
+        $_SESSION['raspuns'] = 'Completeaza numele doctorului!';
+        header("Location: homeADMIN.php");
         exit();
     }else{
         $sql = "SELECT * FROM doctor WHERE nume_doctor = '$doctor'";
@@ -38,10 +39,14 @@ if (!isset($_SESSION['nume'])){
 
             $ans = "Doctorul " . $row[0] . " a fost sters!";
 
-            header("Location: homeADMIN.php?raspuns=$ans");
+            $_SESSION['raspuns'] = $ans;
+
+            header("Location: homeADMIN.php");
             exit();
         }else{
-            header("Location: homeADMIN.php?raspuns=Doctorul pe care doriti sa-l stergeti nu exista!");
+            $_SESSION['raspuns'] = 'Doctorul pe care doriti sa-l stergeti nu exista!';
+
+            header("Location: homeADMIN.php");
             exit();
         }
     }
