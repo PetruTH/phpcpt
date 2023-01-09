@@ -135,7 +135,7 @@ if($x < 4){
         }
     }else {
         $_SESSION['errorp'] = 'Doctorul are deja o programare la acea data!';
-        header("Location: home.php?errorp=Doctorul are deja o programare la acea data!");
+        header("Location: home.php");
         exit();
         }
     }
