@@ -2,6 +2,8 @@
 
 session_start();
 include "../dbconnection.php";
+$_SESSION['error_login'] = '';
+
 
 if(isset($_SESSION['nume']))    
     $usr = $_SESSION['nume'];
