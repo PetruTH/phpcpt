@@ -1,5 +1,6 @@
 <?php session_start(); 
 include "dbconnection.php";
+include "login/captcha.php";
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -17,7 +18,6 @@ $pacienti = "SELECT * FROM credentiale where drept = 2";
 
 $result_doctori = mysqli_query($conn, $doctori);
 $result_pacienti = mysqli_query($conn, $pacienti);
-
 ?>
 
 <!DOCTYPE html>
@@ -25,10 +25,10 @@ $result_pacienti = mysqli_query($conn, $pacienti);
     <style>
 
     .registration form {
-    margin-top: 10%;
+    margin-top: 5%;
     margin-left: 25%;
   width: 50%;
-  height:390px;
+  height: 500px;
   background-color: black;
   padding: 10px 0px 0px 4px;
   border-radius: 15px;
@@ -81,6 +81,7 @@ button {
   text-align: right;
   text-transform: none;
 }
+
     </style>
 	<head>
 		<title>Home</title>
@@ -89,9 +90,8 @@ button {
 	<body style="background-color:powderblue;">
 
 
-	<?php ?>
-
 <div class="registration">
+
         <form action="login\loginPacient.php" method="post">
 
         <h2>LOGIN</h2>
@@ -106,11 +106,26 @@ button {
         <label>Password</label>
         <input type="password" name="password" placeholder="Password"><br> 
 
+        <div>
+        <div>
+            <label>Enter Captcha</label>
+            <input type="text" name="captcha_verify">
+        </div>
+        <div>
+            <?php echo "Are you human?" ?>
+            <?php echo "Enter the next code " . $_SESSION['captcha_code'] . " using lowercases." ?>
+        </div>
+    </div>
+
         <button class="register_button" type="submit" <?php if(mysqli_num_rows($result) != 0) { ?> disabled <?php }?> >
           Login
         </button>
      
         <div><a href="register\index.php">Create account!</a></div>
+        
+        
+        <!-- DE IMPLEMENTAT -->
+        <div><a href="#">Continue as a guest!</a></div> 
         
     
     
