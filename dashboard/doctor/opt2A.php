@@ -91,10 +91,12 @@ if (!isset($_SESSION['nume'])){
 
 
     if(empty($diagnostic)){
-        header("Location: homeDOCTOR.php?ans=Completeaza diagnosticul pacientului examinat!");
+        $_SESSION['ans'] = 'Completeaza diagnosticul pacientului examinat!';
+        header("Location: homeDOCTOR.php");
         exit();
     }else if (empty($tratament)) {
-        header("Location: homeDOCTOR.php?ans=Completeaza tratamentul pacientului examinat!");
+        $_SESSION['ans'] = 'Completeaza tratamentul pacientului examinat!';
+        header("Location: homeDOCTOR.php");
         exit();
     }else{
         $ceva = $diagnostic . " " . $ora . " " . $dataopt2 . " " . $nume_pac; 
