@@ -25,13 +25,13 @@ $pass = validate($_POST['password']);
 $pass = hash("md5", $pass);
 
 if (empty($uname)) {
-
-    header("Location: ../index.php?error_login=User Name is required");
+    $_SESSION['error_login'] = 'Introdu username-ul!';
+    header("Location: ../index.php");
     exit();
     
 }else if(empty($pass)){
-
-    header("Location: ../index.php?error_login=Password is required");
+    $_SESSION['error_login'] = 'Introdu parola!';
+    header("Location: ../index.php");
     exit();
 }
 
@@ -57,11 +57,13 @@ if (mysqli_num_rows($result) === 1) {
         }
 
     }else{
-            header("Location: ../index.php?error_login=Incorect User name or password. Try again");
+            $_SESSION['error_login'] = 'Date incorecte!';
+            header("Location: ../index.php");
             exit();
     }
 }
 else{
-    header("Location: ../index.php?error_login=Incorect User name or password. Try again");
+    $_SESSION['error_login'] = 'Date incorecte!';
+    header("Location: ../index.php");
     exit();
 }
