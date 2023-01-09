@@ -23,6 +23,8 @@ $uname = validate($_POST['uname']);
 
 $pass = validate($_POST['password']);
 $pass = hash("md5", $pass);
+$captchausr = validate($_POST['captcha_verify']);
+
 
 if (empty($uname)) {
     $_SESSION['error_login'] = 'Introdu username-ul!';
@@ -42,7 +44,7 @@ if (mysqli_num_rows($result) === 1) {
 
     $row = mysqli_fetch_assoc($result);
 
-    if ($row['nume'] === $uname && $row['parola'] === $pass) {
+    if ($row['nume'] === $uname && $row['parola'] === $pass && $captchausr === $_SESSION['captcha_code']) {
         echo "Logged in!";
         $_SESSION['nume'] = $row['nume'];
         if($row['drept'] === '2'){
