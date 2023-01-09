@@ -2,6 +2,7 @@
 
 session_start();
 include "../dbconnection.php";
+$_SESSION['ans'] = '';
 
 if (!isset($_SESSION['nume'])){ 
     exit('Your session expiried!');
@@ -20,17 +21,29 @@ if (!isset($_SESSION['nume'])){
     $datapr = validate($_POST['datapr']);
     $doctor = $_SESSION['nume'];
 
-    if(empty($ora)){
-        header("Location: homeDOCTOR.php?raspuns=Selecteaza o ora!");
+    if(empty($datapr)){
+        $_SESSION['rsp'] = 'Selecteaza o data';
+        header("Location: homeDOCTOR.php");
         exit();
-    }else if(empty($datapr)){
-        header("Location: homeDOCTOR.php?raspuns=Selecteaza o data!");
+    }else if($datapr < date('Y-m-d')){
+        $_SESSION['rsp'] = 'Nu poti anula o programare din trecut!';
+        header("Location: homeDOCTOR.php");
+        exit();
+    }
+
+    if(empty($ora)){
+        $_SESSION['rsp'] = 'Selecteaza o ora!';
+        header("Location: homeDOCTOR.php");
+        exit();
+    }else if($ora < 0 || $ora > 23){    
+        $_SESSION['rsp'] = 'Selecteaza o ora valida';
+        header("Location: homeDOCTOR.php");
         exit();
     }
 
     $sql = "SELECT * FROM programari WHERE nume_doctor = '$doctor' and ora='$ora' and dataprog = '$datapr'";
     $result = mysqli_query($conn, $sql);
-    $select_str = ""; 
+    $select_str = "Ati selectat programarea urmatoare:<br> "; 
     $row = mysqli_fetch_row($result);
     if($row){
         $_SESSION['ora_opt2'] = $row[5];
@@ -44,11 +57,13 @@ if (!isset($_SESSION['nume'])){
     $result_del = mysqli_query($conn, $sql_del);
 
     if($select_str == "Ati selectat programarea urmatoare:<br> "){
-        header("Location: homeDOCTOR.php?raspuns=Programare inexistenta");
+        $_SESSION['rsp'] ='Programare inexistenta';
+        header("Location: homeDOCTOR.php");
         exit();
     }else{
         $delete = "Programarea anulata: " . $select_str;
-        header("Location: homeDOCTOR.php?raspuns=$delete");
+        $_SESSION['rsp'] =$delete;
+        header("Location: homeDOCTOR.php");
         exit();
     }
 
