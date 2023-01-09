@@ -19,34 +19,48 @@ if (!isset($_SESSION['nume'])){
     $ora = validate($_POST['ora']);
     $datapr = validate($_POST['datapr']);
     $doctor = $_SESSION['nume'];
+}
+
+    if(empty($datapr)){
+        $_SESSION['rsp'] = 'Selecteaza o data';
+        header("Location: homeDOCTOR.php");
+        exit();
+    }else if($datapr > date('Y-m-d')){
+        $_SESSION['rsp'] = 'Selecteaza o programare pe care ai evaluat-o in trecut!';
+        header("Location: homeDOCTOR.php");
+        exit();
+    }
 
     if(empty($ora)){
-        header("Location: homeDOCTOR.php?raspuns=Selecteaza o ora!");
+        $_SESSION['rsp'] = 'Selecteaza o ora!';
+        header("Location: homeDOCTOR.php");
         exit();
-    }else if(empty($datapr)){
-        header("Location: homeDOCTOR.php?raspuns=Selecteaza o data!");
-        exit();
-    }
-
-    $sql = "SELECT * FROM programari WHERE nume_doctor = '$doctor' and ora='$ora' and dataprog = '$datapr'";
-    $result = mysqli_query($conn, $sql);
-    $select_str = "Ati selectat programarea urmatoare:<br> " ;
-
-    $row = mysqli_fetch_row($result);
-    if($row){
-        $_SESSION['ora_opt2'] = $row[5];
-        $_SESSION['data_opt2'] = $row[1];
-        $_SESSION['nume_pacient_opt2'] = $row[2];
-        
-        $select_str .= " ora " . $row[5] . " din data de " . $row[1] . " a pacientului " . $row[2]; 
-    }
-
-    if($select_str == "Ati selectat programarea urmatoare:<br> "){
-        header("Location: homeDOCTOR.php?raspuns=Programare inexistenta");
+    }else if($ora < 0 || $ora > 23){    
+        $_SESSION['rsp'] = 'Selecteaza o ora valida';
+        header("Location: homeDOCTOR.php");
         exit();
     }else{
-        header("Location: homeDOCTOR.php?raspuns=$select_str");
-        exit();
-    }
+ 
+        $sql = "SELECT * FROM programari WHERE nume_doctor = '$doctor' and ora='$ora' and dataprog = '$datapr'";
+        $result = mysqli_query($conn, $sql);
+        $select_str = "Ati selectat programarea urmatoare:<br> " ;
 
-}
+        $row = mysqli_fetch_row($result);
+        if($row){
+            $_SESSION['ora_opt2'] = $row[5];
+            $_SESSION['data_opt2'] = $row[1];
+            $_SESSION['nume_pacient_opt2'] = $row[2];
+            
+            $select_str .= " ora " . $row[5] . " din data de " . $row[1] . " a pacientului " . $row[2]; 
+        }
+
+        if($select_str == "Ati selectat programarea urmatoare:<br> "){
+            $_SESSION['rsp'] = 'Programare inexistenta';
+            header("Location: homeDOCTOR.php");
+            exit();
+        }else{
+            $_SESSION['rsp'] = $select_str;
+            header("Location: homeDOCTOR.php");
+            exit();
+        }
+    }
