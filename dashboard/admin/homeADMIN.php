@@ -168,10 +168,10 @@ button {
                     <input type="text" name="numedr"><br>
                     
                     <label>Numarul de telefon</label>
-                    <input type="text" name="tlf" pattern="[0][7][0-9]{8}"><br>
+                    <input type="text" name="tlf" ><br>
 
                     <label>Program de lucru</label>
-                    <input type="text" name="interval"  pattern="[0-2][0-9][:][0][0][-][0-2][0-9][:][0][0]"><br>
+                    <input type="text" name="interval"><br>
 
                     <label>Specializare</label>
                     <input type="text" name="specializare"><br>
@@ -218,15 +218,15 @@ button {
         <a href="../logout.php">Logout</a>
     </div>
     <div id='opt5'>
-    <?php if (isset($_GET['raspuns'])) { ?>
+    <?php if (isset($_SESSION['raspuns'])) { ?>
             <div class="error">
                 <?php 
-                    echo $_GET['raspuns'];
-                    if($_GET['raspuns'][0] == 'A' && $_GET['raspuns'][1] == 't' && $_GET['raspuns'][2] == 'i'){ ?>
+                    echo $_SESSION['raspuns'];
+                    if($_SESSION['raspuns'][0] == 'A' && $_SESSION['raspuns'][1] == 't' && $_SESSION['raspuns'][2] == 'i'){ ?>
                         <div>
                             <form action="opt4A.php" method="post">
                             <label>Noul program</label>
-                                <input type="text" name="prog" pattern="[0-2][0-9][:][0][0][-][0-2][0-9][:][0][0]"><br>
+                                <input type="text" name="prog"><br>
                                 <button class="register_button" type="submit">Genereaza!</button> 
                             </form>
                         </div>
