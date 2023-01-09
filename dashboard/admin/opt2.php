@@ -7,7 +7,7 @@ if (!isset($_SESSION['nume'])){
     exit('Your session expiried!');
   }
 
-  if (isset($_POST['numedr']) && isset($_POST['interval']) && isset($_POST['tlf']) && isset($_POST['specializare']) && isset($_POST['pass'])) {
+  if (isset($_POST['numedr'])) {
 
     function validate($data){
        $data = trim($data);
@@ -17,55 +17,37 @@ if (!isset($_SESSION['nume'])){
     }
 
     $doctor = validate($_POST['numedr']);
-    $program = validate($_POST['interval']);
-    $tlf = validate($_POST['tlf']);
-    $specializare = validate($_POST['specializare']);
-    $pass = validate($_POST['pass']);
 
-    $pattern_interval="/[0-2][0-9][:][0][0][-][0-2][0-9][:][0][0]$/";
-    $pattern_tlf="/[0][7]\d{8}$/";
+
 
     if(empty($doctor)){
         $_SESSION['raspuns'] = 'Completeaza numele doctorului!';
         header("Location: homeADMIN.php");
         exit();
-    }else if(empty($program)){
-        $_SESSION['raspuns'] = 'Introdu intervalul orar in care doctorul lucreaza!';
-        header("Location: homeADMIN.php");
-        exit();
-    }else if(empty($tlf)){
-        $_SESSION['raspuns'] = 'Completeaza numarul de telefon al doctorului!';
-        header("Location: homeADMIN.php");
-        exit();
+    }else{
+        $sql = "SELECT * FROM doctor WHERE nume_doctor = '$doctor'";
+        $result =  mysqli_query($conn, $sql);
+
+        $row = mysqli_fetch_row($result);
+
+        if($row[0]){
+            $sql_del = "DELETE FROM doctor WHERE nume_doctor = '$doctor'";
+            $result_del = mysqli_query($conn, $sql_del);
+
+            $sql_del2 = "DELETE FROM credentiale WHERE nume = '$doctor'";
+            $result_del2 = mysqli_query($conn, $sql_del2);
+
+            $ans = "Doctorul " . $row[0] . " a fost sters!";
+
+            $_SESSION['raspuns'] = $ans;
+
+            header("Location: homeADMIN.php");
+            exit();
+        }else{
+            $_SESSION['raspuns'] = 'Doctorul pe care doriti sa-l stergeti nu exista!';
+
+            header("Location: homeADMIN.php");
+            exit();
+        }
     }
-    else if(empty($specializare)){
-        $_SESSION['raspuns'] = 'Completeaza specializarea doctorului!';
-        header("Location: homeADMIN.php");
-        exit();
-    }else if(empty($pass)){
-        $_SESSION['raspuns'] = 'Introdu o parola pentru contul doctorului!';
-        header("Location: homeADMIN.php");
-        exit();
-    }else if(preg_match($pattern_interval, $program) === 0){
-        $_SESSION['raspuns'] = 'Introdu un interval orar valid!';
-        header("Location: homeADMIN.php");
-        exit();
-    }else if(preg_match($pattern_tlf, $tlf) === 0){
-        $_SESSION['raspuns'] = 'Introdu un numar de telefon valid!';
-        header("Location: homeADMIN.php");
-        exit();
-    }
-
-    $insertSQL = "INSERT INTO doctor VALUES ('$doctor', '$tlf', '$program', '$specializare')";
-    $wasInserted = mysqli_query($conn, $insertSQL);
-
-    $pass = hash("md5", $pass);
-    $insertSQLacc = "INSERT INTO credentiale VALUES ('$doctor', '$pass', '1')";
-    $wasInsertedacc = mysqli_query($conn, $insertSQLacc);
-
-    if($wasInserted){
-        $_SESSION['raspuns'] = 'Ai inregistrat doctorul cu succes.';
-        header("Location: homeADMIN.php");
-        exit();
-    } 
 }
