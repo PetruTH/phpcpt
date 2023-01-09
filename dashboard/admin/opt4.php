@@ -19,7 +19,8 @@ if (!isset($_SESSION['nume'])){
     $doctor = validate($_POST['numedr']);
 
     if(empty($doctor)){
-        header("Location: homeADMIN.php?raspuns=Alege un doctor!");
+        $_SESSION['raspuns'] = 'Alege un doctor!';
+        header("Location: homeADMIN.php");
         exit();
     }else{
 
@@ -36,10 +37,12 @@ if (!isset($_SESSION['nume'])){
         }
 
         if($select_str == "Ati selectat doctorul "){
-            header("Location: homeADMIN.php?raspuns=Acest doctor nu este inregistrat la clinica.");
+            $_SESSION['raspuns'] = 'Acest doctor nu este inregistrat la clinica.';
+            header("Location: homeADMIN.php");
             exit();
         }else{
-            header("Location: homeADMIN.php?raspuns=$select_str");
+            $_SESSION['raspuns'] = $select_str;
+            header("Location: homeADMIN.php");
             exit();
         }
     }
