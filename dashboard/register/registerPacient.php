@@ -3,7 +3,9 @@
 session_start();
 include "../dbconnection.php";
 
-$usr = $_SESSION['nume'];
+if(isset($_SESSION['nume']))    
+    $usr = $_SESSION['nume'];
+else $usr='';
 
 $qry = "SELECT * FROM credentiale WHERE nume = '$usr'";
 $result = mysqli_query($conn, $qry);
@@ -12,7 +14,7 @@ if(mysqli_num_rows($result) != 0){
     exit("Nu poti crea un cont cat timp esti logat!");
 }
 
-if (isset($_POST['uname']) && isset($_POST['password'])) {
+if (isset($_POST['uname']) && isset($_POST['pass'])) {
 
     function validate($data){
        $data = trim($data);
@@ -23,16 +25,18 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
     }
 }
     $uname = validate($_POST['uname']);
-    $pass = validate($_POST['password']);
-    $pass = hash("md5", $pass);
+    $pass = validate($_POST['pass']);
 
 if(empty($uname)){
-    header("Location: index.php?error_register=Username is required!");
+    $_SESSION['error_register'] = "Introdu username-ul!";
+    header("Location: index.php");
     exit();
 } else if(empty($pass)){
-    header("Location: index.php?error_register=Password is required!");
+    $_SESSION['error_register'] = "Introdu parola!";
+    header("Location: index.php");
     exit();
 }
+$pass = hash("md5", $pass);
 
 $sql = "SELECT * FROM credentiale WHERE nume = '$uname'";
 $result = mysqli_query($conn, $sql);
@@ -43,14 +47,13 @@ if(mysqli_num_rows($result) === 0){
     $wasInserted = mysqli_query($conn, $insertSQL);
 
     if($wasInserted){
-        header("Location: ../index.php?error_register=Registration successful!");
-        exit();
-    } else {
-        header("Location: index.php?error_register=Bad luck! Try again");
+        $_SESSION['error_register'] = "Te ai inregistrat cu succes!";
+        header("Location: ../index.php");
         exit();
     }
 } else {
-    header("Location: index.php?error_register=An account with this username already exists!");
+    $_SESSION['error_register'] = "Exista deja un cont cu acest username.";
+    header("Location: index.php");
     exit();
 }
 
