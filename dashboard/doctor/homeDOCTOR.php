@@ -1,6 +1,6 @@
 <?php session_start(); 
 include "../dbconnection.php";
-
+$_SESSION['raspuns'] = ' ';
 $usr = $_SESSION['nume'];
 
 $qry = "SELECT * FROM credentiale WHERE nume = '$usr'";
@@ -19,6 +19,7 @@ $row = mysqli_fetch_row($result);
 echo 'Numar de telefon: ' . $row[1] . "<br>";
 echo 'Interval orar: ' . $row[2] . "<br>";
 echo 'Specializare: ' . $row[3] . "<br>";
+
 ?>
 
 <!DOCTYPE html>
@@ -118,8 +119,8 @@ button {
                 document.getElementById('opt3').style.display ='none';
                 document.getElementById('opt4').style.display ='block';
                 document.getElementById('opt5').style.display ='none';
-
             }
+
             datePickerId.max = new Date().toISOString().split("T")[0];
         </script>
 	<body style="background-color:powderblue;">
@@ -155,7 +156,6 @@ button {
             <div id="opt1" style="display: none;">
             <div class="registration">
                 <form action="opt1.php" method="post">
-
                     <h2>Programare</h2>
 
                     <label>Data</label>
@@ -174,7 +174,7 @@ button {
                     <h2>Alege programarea pentru ca doresti sa oferi un diagnostic sau o reteta.</h2>
 
                     <label>Data</label>
-                    <input type="date" name="datapr" max="<?= date('Y-m-d'); ?>"><br>
+                    <input type="date" name="datapr" ><br>
                     
                     <label>Ora</label>
                     <input type="number" id="meeting-time" name="ora"><br>
@@ -209,7 +209,7 @@ button {
                     <h2>Actualizeaza-ti numarul de contact</h2>
 
                     <label>Numarul de telefon</label>
-                    <input type="text" name="tlf" pattern="[0][7][0-9]{8}"><br>
+                    <input type="text" name="tlf" ><br>
 
                     <button class="register_button" type="submit">Actualizeaza</button> 
 
@@ -220,24 +220,29 @@ button {
         </div>
     </div>
     <div id='opt5'>
-    <?php if (isset($_GET['raspuns'])) { ?>
+    <?php
+        if (isset($_SESSION['rsp'])) { ?>
             <div class="error">
                 <?php 
-                    echo $_GET['raspuns'];
-                    if($_GET['raspuns'][0] == 'A' && $_GET['raspuns'][1] == 't' && $_GET['raspuns'][2] == 'i'){ ?>
-                        <div>
-                            <form action="opt2A.php" method="post">
-                                <input type="text" placeholder="Completati aici diagnosticul pacientului" name="diagnostic">    
-                                <input type="text" placeholder="Completati aici tratamentul pacientului" name="tratament">    
-                                <button class="register_button" type="submit">Genereaza!</button> 
-                            </form>
-                        </div>
-                    
-                    <?php } ?>
+                    echo $_SESSION['rsp'];
+                     if($_SESSION['rsp'][0] == 'A' && $_SESSION['rsp'][1] == 't' && $_SESSION['rsp'][2] == 'i'){ ?>
+                           <div>
+                             <form action="opt2A.php" method="post">
+                                 <input type="text" placeholder="Completati aici diagnosticul pacientului" name="diagnostic">    
+                                 <input type="text" placeholder="Completati aici tratamentul pacientului" name="tratament">    
+                                 <button class="register_button" type="submit">Genereaza!</button> 
+                             </form>
+                         </div>  
+                        <?php
+                        if(isset($_SESSION['ans']))
+                            echo $_SESSION['ans'];
+                        
+                        } ?>
             </p>
     <?php } ?>
     </div>
-		 <br><br>
+    <div>
         <a href="../logout.php">Logout</a>
+    </div>
 	</body>
 </html>
