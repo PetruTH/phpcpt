@@ -98,13 +98,13 @@ button {
  
     <?php
         $sql = "SELECT * FROM doctor";
-        $result = mysqli_query($conn, $sql); // First parameter is just return of "mysqli_connect()" function
+        $result = mysqli_query($conn, $sql); 
         echo "<br>";
         echo "<table border='1'>";
-        while ($row = mysqli_fetch_assoc($result)) { // Important line !!! Check summary get row on array ..
+        while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr>";
-            foreach ($row as $field => $value) { // I you want you can right this line like this: foreach($row as $value) {
-                echo "<td>" . $value . "</td>"; // I just did not use "htmlspecialchars()" function. 
+            foreach ($row as $field => $value) { 
+                echo "<td>" . $value . "</td>"; 
             }
             echo "</tr>";
         }
@@ -117,15 +117,15 @@ button {
 
         <h2>Programare</h2>
 
-        <?php if (isset($_GET['errorp'])) { ?>
-            <p class="error"><?php echo $_GET['errorp']; ?></p>
+        <?php if (isset($_SESSION['errorp'])) { ?>
+            <p class="error"><?php echo $_SESSION['errorp']; ?></p>
         <?php } ?>
 
         <label>Nume complet</label>
         <input type="text" name="nume" placeholder="Nume"><br>
 
         <label>Data</label>
-        <input type="date" id="meeting-time" name="data" min="<?= date('Y-m-d'); ?>"><br>
+        <input type="date" id="meeting-time" name="data"><br>
 
         <label>Ora</label>
         <input type="number" id="meeting-time" name="ora"><br>
@@ -142,12 +142,9 @@ button {
             $select_str = "<option disabled selected value=\"\">Alege un doctor</option> ";
             $sql = "SELECT * FROM doctor";
             $result = mysqli_query($conn, $sql);
-                 while ($row = mysqli_fetch_row($result)) 
-                 {
+                 while ($row = mysqli_fetch_row($result)) {
                  $select_str .= "<OPTION VALUE=\"$row[0]\" >$row[0]\n"; 
-               //If the array is to be integer indexed, use the following
-               // $select_str .= "<OPTION VALUE=\"$row[0]\" >$row[1]\n"; 
-                  } 
+                } 
                 echo $select_str;
             ?>
         </select>
