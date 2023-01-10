@@ -93,31 +93,63 @@ if (!isset($_SESSION['nume'])){
             $this->Ln();
         }
 
-        function CreateTable(){
+       
+        function FancyTable()
+        {
+            
+            $this->SetY(83);
+            $this->SetX(50);
+            $header = array("Diagnostic", "tratament");
+            $w = array(100,100);
+
+            for($i=0;$i<count($header);$i++)
+                $this->Cell($w[$i],7,$header[$i],1,0,'C');
+            $this->Ln();
+        
             global $diagnostic;
             global $tratament;
 
-            $this->SetY(92);
-            $this->Cell(260, 70, "", 1, 0);
+            $height = 90;
+            
+            $datatr = array();
+            $datatr = explode("\n", $tratament);
+            
+            $datadi = array();
+            $datadi = explode("\n", $diagnostic);
+            
+            $length = max(count($datadi), count($datatr));
+            $datadi = array_pad($datadi, $length, '');
+            $datatr = array_pad($datatr, $length, '');
+            
+            $this->SetY(90);
+            $this->SetX(50);
 
-            $this->SetFont('Arial', 'B', 15);
-            $this->SetTextColor(0);
 
-            $this->SetY(92);
-            $this->Cell(130, 25, "Diagnostic rezultat", 1, 0, 'C');
-            $this->Cell(130, 25, "Tratament recomandat", 1, 0, 'C');
+            for($i=0; $i < count($datatr); $i=$i+1){
+                $this->SetY($height);
+                $this->SetX(50);
+                $this->Multicell($w[0], 5, $datadi[$i], 1);
+                
+                $this->SetY($height);
+                $this->SetX(150);
+                $this->Multicell($w[1], 5, $datatr[$i], 1);
+                
+                
+                $height = $height + 5;
+            }
 
-            $this->SetFont('Arial', 'B', 15);
-            $this->SetTextColor(0);
-
-
-            $this->SetY(117);
-            $this->cell(130, 45, $diagnostic, 1);
-            $this->SetY(117);
-            $this->SetX(145);
-            $this->cell(130, 45, $tratament, 1);
         }
     }
+
+    $datatr = array();
+    $datatr = explode("\n", $tratament);
+        
+    $datadi = array();
+    $datadi = explode("\n", $diagnostic);
+            
+    $length = max(count($datadi), count($datatr));
+    $datadi = array_pad($datadi, $length, '');
+    $datatr = array_pad($datatr, $length, '');
 
     if(empty($diagnostic)){
         $_SESSION['ans'] = 'Completeaza diagnosticul pacientului examinat!';
@@ -127,6 +159,10 @@ if (!isset($_SESSION['nume'])){
         $_SESSION['ans'] = 'Completeaza tratamentul pacientului examinat!';
         header("Location: homeDOCTOR.php");
         exit();
+    }else if($length > 18){
+        $_SESSION['ans'] = 'Ati introdus prea multe date!';
+        header("Location: homeDOCTOR.php");
+        exit();
     }else{
         $pdf = new PDF('L', 'mm', array(210, 298));
         $pdf->AliasNbPages();
@@ -134,7 +170,7 @@ if (!isset($_SESSION['nume'])){
         $pdf->AddPage();
         $pdf->detalii_programare();
         $pdf->detalii_client();
-        $pdf->CreateTable();
+        $pdf->FancyTable();
         $pdf->Output();
     }
 }
