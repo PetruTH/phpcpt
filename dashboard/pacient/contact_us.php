@@ -1,6 +1,6 @@
 <?php session_start(); 
 include "../dbconnection.php";
-require 'simple_html_dom.php';
+require '../simple_html_dom.php';
 
 $usr = $_SESSION['nume'];
 
