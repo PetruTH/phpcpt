@@ -3,8 +3,6 @@
 session_start();
 include "../dbconnection.php";
 $_SESSION['error_login'] = '';
-
-
 if(isset($_SESSION['nume']))    
     $usr = $_SESSION['nume'];
 else $usr='';
@@ -31,11 +29,11 @@ if (isset($_POST['uname']) && isset($_POST['pass'])) {
 
 if(empty($uname)){
     $_SESSION['error_register'] = "Introdu username-ul!";
-    header("Location: index.php");
+    header("Location: index_login.php");
     exit();
 } else if(empty($pass)){
     $_SESSION['error_register'] = "Introdu parola!";
-    header("Location: index.php");
+    header("Location: index_login.php");
     exit();
 }
 $pass = hash("md5", $pass);
@@ -50,12 +48,12 @@ if(mysqli_num_rows($result) === 0){
 
     if($wasInserted){
         $_SESSION['error_register'] = "Te ai inregistrat cu succes!";
-        header("Location: ../index.php");
+        header("Location: ../index_login.php");
         exit();
     }
 } else {
     $_SESSION['error_register'] = "Exista deja un cont cu acest username.";
-    header("Location: index.php");
+    header("Location: index_login.php");
     exit();
 }
 
