@@ -167,7 +167,8 @@ button {
           }
         ?>
         <br><br>
-        <a href="../logout.php">Logout</a>
+        <a href="../logout.php">Logout</a><br>
+        <a href="contact_us.php">Trimite un feedback!</a>
         <p>Numarul de vizitari pe aceasta pagina: <?php echo $_SESSION['views'] ?><br></p>
 </div>
 
