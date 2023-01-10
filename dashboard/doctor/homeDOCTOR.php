@@ -227,9 +227,10 @@ button {
                     echo $_SESSION['rsp'];
                      if($_SESSION['rsp'][0] == 'A' && $_SESSION['rsp'][1] == 't' && $_SESSION['rsp'][2] == 'i'){ ?>
                            <div>
+                             <p>Format: fiecare diagnostic/tratament trebuie scris pe cate un rand</p>
                              <form action="opt2A.php" method="post">
-                                 <input type="text" placeholder="Completati aici diagnosticul pacientului" name="diagnostic">    
-                                 <input type="text" placeholder="Completati aici tratamentul pacientului" name="tratament">    
+                                 <textarea type="text" placeholder="Completati aici diagnosticul pacientului" name="diagnostic"></textarea>
+                                 <textarea type="text" placeholder="Completati aici tratamentul pacientului" name="tratament"></textarea>  
                                  <button class="register_button" type="submit">Genereaza!</button> 
                              </form>
                          </div>  
