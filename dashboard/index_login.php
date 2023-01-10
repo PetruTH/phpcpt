@@ -123,37 +123,12 @@ button {
      
         <div><a href="register\index.php">Create account!</a></div>
         
-        
-        <!-- DE IMPLEMENTAT -->
-        <div><a href="#">Continue as a guest!</a></div> 
-        
     
     
         </form>
 
       </div>
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-      <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Doctori',     <?php echo mysqli_num_rows($result_doctori) ?>],
-          ['Pacienti',      <?php echo mysqli_num_rows($result_pacienti) ?>],
-          
-        ]);
-
-        var options = {
-          title: 'Utilizatori pe site',
-          is3D: true,
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-        chart.draw(data, options);
-      }
-    </script>
-    <div id="piechart_3d" style="width: 700px; height: 300px; margin-top: 50px; margin-left: 390px;"></div>
+      
 
 	</body>
 </html>
