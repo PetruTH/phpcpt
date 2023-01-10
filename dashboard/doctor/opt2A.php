@@ -139,7 +139,7 @@ if (!isset($_SESSION['nume'])){
             }
 
             $image = "poza.jpg";
-            $this->Cell( 40, 40, $this->Image($image, 125, $this->GetY() + 10, 40), 0, 0, 'L', false );
+            $this->Cell( 40, 40, $this->Image($image, 125, $this->GetY() + 10, 33), 0, 0, 'L', false );
         }
     }
 
