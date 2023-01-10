@@ -25,70 +25,99 @@ if (!isset($_SESSION['nume'])){
     $nume_pac = $_SESSION['nume_pacient_opt2'];
     $tratament = validate($_POST['tratament']);
 
+    class PDF extends FPDF {
 
-    class PDF extends FPDF
-    {
-        function Header(){
-            global $title;
+        function Header() {
+            $this->SetTextColor(102, 255, 153);
+            $this->SetFont('Arial', 'B', 28);
+            $this->Cell(134, 12,'Clinica DAW');
 
-            $this->SetFont('Arial','B',15);
-            $w = $this->GetStringWidth($title)+6;
-            $this->SetX((210-$w)/2);
+            $this->SetFont('Arial', 'B', 35);
+            $this->SetTextColor(0);
+            $this->setX(165);
+            $this->Cell(118, 12,'Rezultat consultatie');
+            $this->Ln(18);
+            $this->Ln();
+        }
 
-            $this->SetDrawColor(0,80,180);
-            $this->SetFillColor(230,230,0);
-            $this->SetTextColor(220,50,50);
-
-            $this->SetLineWidth(1);
-
-            $this->Cell($w,9,$title,1,1,'C',true);
-
-            $this->Ln(10);
-    }
-
-        function Footer(){
+        function Footer() {
             $this->SetY(-15);
             $this->SetFont('Arial','I',8);
-            $this->SetTextColor(128);
-            $this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
+            $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
         }
 
-        function Diag($num, $label){
-            $this->SetFont('Arial','',12);
-            $this->SetFillColor(200,220,255);
-            $this->Cell(0,6,"Diagnostic : $label",0,1,'L',true);
-            $this->Ln(4);
-        }
+        function detalii_programare() {
+            global $doctor;
+            global $ora;
+            global $dataopt2;
+            global $nume_pac;
 
-        function PrintChapterDiag($num, $title, $x){
-            $this->AddPage();
-            $this->Diag($num,$title);
-            $this->ChapterBody($x);
-        }
-
-        function ChapterBody($x){
-            $txt = $x;
-            $this->SetFont('Times','',12);
-            $this->MultiCell(0,5,$txt);
             $this->Ln();
-            $this->SetFont('','I');
-            $this->Cell(0,5,'');
+            $this->Ln();
+            
+            $this->SetFont('Arial', '', 12);
+            $this->SetTextColor(0);
+            $this->SetY(30);
+
+            $this->Cell(134, 6,'Doctor: ' . $doctor);
+            $this->Ln();
+            $this->Ln();
+
+            $this->Cell(134, 6,'Data: ' . $dataopt2);
+            $this->Ln();
+            $this->Ln();
+
+            $this->Cell(134, 6,'Ora: ' . $ora);
+            $this->Ln();
+
         }
 
-        function Reteta($num, $label){
-            $this->SetFont('Arial','',12);
-            $this->SetFillColor(200,220,255);
-            $this->Cell(0,6,"Reteta : $label",0,1,'L',true);
-            $this->Ln(4);
+        function detalii_client(){
+            global $nume_pac;
+            
+            $this->Ln();
+            $this->Ln();
+
+            $this->SetFont('Arial', 'B', 17);
+            $this->SetTextColor(0);
+
+            $this->SetY(30);
+            $this->SetX(165);
+            $this->Cell(118, 6, "Pacient:");
+            $this->Ln();
+
+            $this->SetFont('Arial', '', 12);
+
+            $this->SetX(165);
+            $this->Cell(118, 6, 'Nume: ' . $nume_pac);
+            $this->Ln();
         }
 
-        function PrintChapterRet($num, $title, $x){
-            $this->AddPage();
-            $this->Reteta($num,$title);
-            $this->ChapterBody($x);
+        function CreateTable(){
+            global $diagnostic;
+            global $tratament;
+
+            $this->SetY(92);
+            $this->Cell(260, 70, "", 1, 0);
+
+            $this->SetFont('Arial', 'B', 15);
+            $this->SetTextColor(0);
+
+            $this->SetY(92);
+            $this->Cell(130, 25, "Diagnostic rezultat", 1, 0, 'C');
+            $this->Cell(130, 25, "Tratament recomandat", 1, 0, 'C');
+
+            $this->SetFont('Arial', 'B', 15);
+            $this->SetTextColor(0);
+
+
+            $this->SetY(117);
+            $this->cell(130, 45, $diagnostic, 1);
+            $this->SetY(117);
+            $this->SetX(145);
+            $this->cell(130, 45, $tratament, 1);
         }
     }
-
 
     if(empty($diagnostic)){
         $_SESSION['ans'] = 'Completeaza diagnosticul pacientului examinat!';
@@ -99,15 +128,13 @@ if (!isset($_SESSION['nume'])){
         header("Location: homeDOCTOR.php");
         exit();
     }else{
-        $ceva = $diagnostic . " " . $ora . " " . $dataopt2 . " " . $nume_pac; 
-
-        $pdf = new PDF();
-        $title = 'Buletin medical pentru pacientul ' . $nume_pac;
-        $pdf->SetTitle($title);
-        $pdf->SetAuthor('Eliberat de ' . $doctor . 'in urma examinarii pacientul ' . $nume_pac . " examinat la data de " . $dataopt2 . " ora " . $ora);
-        $pdf->PrintChapterDiag(1,'', $diagnostic);
-        $pdf->PrintChapterRet(2,'', $tratament);
+        $pdf = new PDF('L', 'mm', array(210, 298));
+        $pdf->AliasNbPages();
+        $pdf->SetMargins(15, 15, 15);
+        $pdf->AddPage();
+        $pdf->detalii_programare();
+        $pdf->detalii_client();
+        $pdf->CreateTable();
         $pdf->Output();
-        
     }
 }
