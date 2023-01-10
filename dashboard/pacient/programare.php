@@ -30,7 +30,9 @@ if (isset($_POST['nume']) && isset($_POST['data']) && isset($_POST['afectiune'])
     $doctor = validate($_POST['doctor']);
     $ora = validate($_POST['ora']);
     $usr = $_SESSION['nume'];
-
+    $email_parts = explode('@', $mail);
+    $domain = $email_parts[1];
+    
 
 
 if(empty($name)){
@@ -51,6 +53,10 @@ if(empty($name)){
     exit();
 }else if(empty($mail)){
     $_SESSION['errorp'] = 'Introduceti mailul!';
+    header("Location: home.php");
+    exit();
+}else if(!checkdnsrr($domain, 'MX')) {
+    $_SESSION['errorp'] = 'Acest mail este invalid!';
     header("Location: home.php");
     exit();
 }else if($doctor==""){
@@ -135,7 +141,7 @@ if($x < 4){
         }
     }else {
         $_SESSION['errorp'] = 'Doctorul are deja o programare la acea data!';
-        header("Location: home.php");
+        header("Location: home.php?");
         exit();
         }
     }
