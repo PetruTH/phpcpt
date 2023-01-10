@@ -108,8 +108,7 @@ button {
         <input type="text" name="titlu" placeholder="titlu"><br>
 
         <label>Feedback</label>
-        <input type="text" name="feedback"><br>
-
+        <textarea name="feedback"></textarea><br>
         
         
         <p style="margin-top: 25px;">Rezerva programarea</p>
