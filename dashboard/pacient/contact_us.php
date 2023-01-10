@@ -104,7 +104,7 @@ button {
             <p class="error"><?php echo $_SESSION['rsp_fdb']; ?></p>
         <?php } ?>
 
-        <label>Nume complet</label>
+        <label>Titlu</label>
         <input type="text" name="titlu" placeholder="titlu"><br>
 
         <label>Feedback</label>
