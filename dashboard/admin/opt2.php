@@ -56,16 +56,29 @@ if (!isset($_SESSION['nume'])){
         exit();
     }
 
-    $insertSQL = "INSERT INTO doctor VALUES ('$doctor', '$tlf', '$program', '$specializare')";
-    $wasInserted = mysqli_query($conn, $insertSQL);
+    $verifySQL = "SELECT nume_doctor FROM doctor where nume_doctor = '$doctor'";
+    $verify = mysqli_query($conn, $verifySQL);
+    $row = mysqli_fetch_row($verify);
+    $dr = "";
+    if($row){
+        $dr = $row[0];
+    }
+    if($dr != $doctor){
+        $insertSQL = "INSERT INTO doctor VALUES ('$doctor', '$tlf', '$program', '$specializare')";
+        $wasInserted = mysqli_query($conn, $insertSQL);
 
-    $pass = hash("md5", $pass);
-    $insertSQLacc = "INSERT INTO credentiale VALUES ('$doctor', '$pass', '1')";
-    $wasInsertedacc = mysqli_query($conn, $insertSQLacc);
+        $pass = hash("md5", $pass);
+        $insertSQLacc = "INSERT INTO credentiale VALUES ('$doctor', '$pass', '1')";
+        $wasInsertedacc = mysqli_query($conn, $insertSQLacc);
 
-    if($wasInserted){
-        $_SESSION['raspuns'] = 'Ai inregistrat doctorul cu succes.';
+        if($wasInserted){
+            $_SESSION['raspuns'] = 'Ai inregistrat doctorul cu succes.';
+            header("Location: homeADMIN.php");
+            exit();
+        } 
+    }else{
+        $_SESSION['raspuns'] = 'Acest doctor deja este inregistrat!';
         header("Location: homeADMIN.php");
         exit();
-    } 
+    }
 }
