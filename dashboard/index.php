@@ -140,7 +140,9 @@ button {
             }
         ?>
     </div>
-    
+       
+    <?php echo 'Unique visitor count: ' . $_SESSION['visitor_count']; ?>
+
     </div>
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
