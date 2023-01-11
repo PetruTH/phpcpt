@@ -31,6 +31,9 @@ if (!isset($_SESSION['nume'])){
             $this->SetTextColor(102, 255, 153);
             $this->SetFont('Arial', 'B', 28);
             $this->Cell(134, 12,'Clinica DAW');
+            
+            $image = "poza.jpg";
+            $this->Cell( 30, 30, $this->Image($image, 75, $this->GetY()-6, 30), 0, 0, 'L', false );
 
             $this->SetFont('Arial', 'B', 35);
             $this->SetTextColor(0);
@@ -137,9 +140,6 @@ if (!isset($_SESSION['nume'])){
                 
                 $height = $height + 5;
             }
-
-            $image = "poza.jpg";
-            $this->Cell( 40, 40, $this->Image($image, 125, $this->GetY() + 10, 33), 0, 0, 'L', false );
         }
     }
 
