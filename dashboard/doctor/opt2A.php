@@ -44,6 +44,10 @@ if (!isset($_SESSION['nume'])){
         }
 
         function Footer() {
+            $this->SetY(-35);
+            $this->SetFont('Arial','I',8);
+            $this->Cell(0,10,'Document emis la data ' . date('Y-m-d'),0,0,'C');
+
             $this->SetY(-15);
             $this->SetFont('Arial','I',8);
             $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
