@@ -161,7 +161,7 @@ if (!isset($_SESSION['nume'])){
         $_SESSION['ans'] = 'Completeaza tratamentul pacientului examinat!';
         header("Location: homeDOCTOR.php");
         exit();
-    }else if($length > 18){
+    }else if($length > 11){
         $_SESSION['ans'] = 'Ati introdus prea multe date!';
         header("Location: homeDOCTOR.php");
         exit();
