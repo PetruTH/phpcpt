@@ -23,13 +23,13 @@ require 'simple_html_dom.php';
 
 function getUniqueVisitorCount($ip)
 {
-    if(!isset($_SESSION['current_user']))
+    if(!isset($_SERVER['current_user']))
     {
         $file = 'counter.txt';
         if(!$data = @file_get_contents($file))
         {
             file_put_contents($file, base64_encode($ip));
-            $_SESSION['visitor_count'] = 1;
+            $_SERVER['visitor_count'] = 1;
         }
         else{
             $decodedData = base64_decode($data);
@@ -39,15 +39,14 @@ function getUniqueVisitorCount($ip)
               array_push($ipList, $ip);
               file_put_contents($file, base64_encode(implode(';', $ipList)));
             }
-            $_SESSION['visitor_count'] = count($ipList);
+            $_SERVER['visitor_count'] = count($ipList);
         }
-        $_SESSION['current_user'] = $ip;
+        $_SERVER['current_user'] = $ip;
     }
 }
 
 $ip = $_SERVER['REMOTE_ADDR'];
 getUniqueVisitorCount($ip);
-echo 'Unique visitor count: ' . $_SESSION['visitor_count'];
 
 ?>
 
@@ -140,7 +139,6 @@ button {
             }
         ?>
     </div>
-       
     <?php echo 'Unique visitor count: ' . $_SESSION['visitor_count']; ?>
 
     </div>
