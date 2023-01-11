@@ -31,7 +31,7 @@ if (!isset($_SESSION['nume'])){
             $this->SetTextColor(102, 255, 153);
             $this->SetFont('Arial', 'B', 28);
             $this->Cell(134, 12,'Clinica DAW');
-            
+
             $image = "poza.jpg";
             $this->Cell( 30, 30, $this->Image($image, 75, $this->GetY()-6, 30), 0, 0, 'L', false );
 
@@ -102,7 +102,7 @@ if (!isset($_SESSION['nume'])){
             
             $this->SetY(83);
             $this->SetX(50);
-            $header = array("Diagnostic", "tratament");
+            $header = array("Diagnostic", "Tratament");
             $w = array(100,100);
 
             for($i=0;$i<count($header);$i++)
@@ -131,15 +131,18 @@ if (!isset($_SESSION['nume'])){
             for($i=0; $i < count($datatr); $i=$i+1){
                 $this->SetY($height);
                 $this->SetX(50);
-                $this->Multicell($w[0], 5, $datadi[$i], 1);
+                $this->Multicell($w[0], 5, $datadi[$i], 'LR');
                 
                 $this->SetY($height);
                 $this->SetX(150);
-                $this->Multicell($w[1], 5, $datatr[$i], 1);
+                $this->Multicell($w[1], 5, $datatr[$i], 'LR');
                 
                 
                 $height = $height + 5;
             }
+            // $this->SetY($height);
+            $this->SetX(50);
+            $this->Cell(200, 0, '', 'T');
         }
     }
 
