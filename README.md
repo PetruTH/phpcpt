@@ -1,1 +1,1 @@
-http://phpcpt.herokuapp.com/dashboard/index.php
+https://phpcpt.herokuapp.com/dashboard/index.php
