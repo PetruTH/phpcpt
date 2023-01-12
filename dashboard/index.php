@@ -13,6 +13,13 @@ if(isset($_SESSION['nume'])){
 $qry = "SELECT * FROM credentiale WHERE nume = '$usr'";
 $result = mysqli_query($conn, $qry);
 
+if(mysqli_num_rows($result) != 0){
+    exit("Nu poti crea un cont cat timp esti logat!");
+}
+
+$qry = "SELECT * FROM credentiale WHERE nume = '$usr'";
+$result = mysqli_query($conn, $qry);
+
 $doctori = "SELECT * FROM credentiale where drept = 1";
 $pacienti = "SELECT * FROM credentiale where drept = 2";
 
